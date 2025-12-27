@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Store roof -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M20,35 L80,35 L85,20 L15,20 Z" />
+    <!-- Scallops under roof -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M20,35 Q25,45 30,35 Q35,45 40,35 Q45,45 50,35 Q55,45 60,35 Q65,45 70,35 Q75,45 80,35" />
+    <!-- Store walls and door -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M25,35 L25,85 L75,85 L75,35 M42,85 L42,65 L58,65 L58,85" />
+</vector>

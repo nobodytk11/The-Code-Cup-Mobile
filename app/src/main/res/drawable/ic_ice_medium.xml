@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Top-left ice cube -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="6"
+        android:strokeLineJoin="round"
+        android:pathData="M17,12 L42,12 Q47,12 47,17 L47,42 Q47,47 42,47 L17,47 Q12,47 12,42 L12,17 Q12,12 17,12 Z" />
+    <!-- Bottom-right ice cube, moved up slightly (y-10) while maintaining x-gap -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="6"
+        android:strokeLineJoin="round"
+        android:pathData="M54,39 L79,39 Q84,39 84,44 L84,69 Q84,74 79,74 L54,74 Q49,74 49,69 L49,44 Q49,39 54,39 Z" />
+</vector>

@@ -1,0 +1,34 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Two wavy steam lines -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M42,22 C48,15 36,10 42,3 M58,22 C64,15 52,10 58,3" />
+    
+    <!-- Cup Body -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M18,32 L82,32 L78,78 Q76,88 50,88 Q24,88 22,78 Z" />
+    
+    <!-- Handle -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M82,45 Q94,45 94,60 Q94,75 82,75" />
+    
+    <!-- Base line (Saucer) -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M10,95 L90,95" />
+</vector>

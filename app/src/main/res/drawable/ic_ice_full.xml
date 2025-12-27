@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Three rounded ice cubes in a pyramid -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineJoin="round"
+        android:pathData="M38,15 L62,15 Q67,15 67,20 L67,44 Q67,49 62,49 L38,49 Q33,49 33,44 L33,20 Q33,15 38,15 Z" />
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineJoin="round"
+        android:pathData="M18,50 L42,50 Q47,50 47,55 L47,79 Q47,84 42,84 L18,84 Q13,84 13,79 L13,55 Q13,50 18,50 Z" />
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineJoin="round"
+        android:pathData="M58,50 L82,50 Q87,50 87,55 L87,79 Q87,84 82,84 L58,84 Q53,84 53,79 L53,55 Q53,50 58,50 Z" />
+</vector>

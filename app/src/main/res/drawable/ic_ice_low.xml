@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- One rounded ice cube -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="8"
+        android:strokeLineJoin="round"
+        android:pathData="M35,35 L65,35 Q70,35 70,40 L70,70 Q70,75 65,75 L35,75 Q30,75 30,70 L30,40 Q30,35 35,35 Z" />
+</vector>

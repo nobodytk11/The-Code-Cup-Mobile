@@ -1,0 +1,43 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Straw (Vertical line going all the way down) -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M50,5 L50,88" />
+    
+    <!-- Dome Lid -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M30,30 C30,12 70,12 70,30" />
+    
+    <!-- Lid Brim (The horizontal band) -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M20,30 L80,30 L80,40 L20,40 Z" />
+    
+    <!-- Cup Body (Tapered) -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M26,40 L74,40 L67,95 L33,95 Z" />
+    
+    <!-- Coffee Liquid Level (The diagonal line) -->
+    <path
+        android:strokeColor="#324A59"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M27,55 L73,75" />
+</vector>

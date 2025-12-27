@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Lid handle (rounded top) -->
+    <path
+        android:strokeColor="#FF5252"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M38,28 L38,18 C38,12 62,12 62,18 L62,28" />
+    
+    <!-- Lid brim (the flat horizontal part) -->
+    <path
+        android:strokeColor="#FF5252"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M15,28 L85,28" />
+    
+    <!-- Trash Can Body (tapered with rounded bottom) -->
+    <path
+        android:strokeColor="#FF5252"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M25,28 L32,88 C33,95 67,95 68,88 L75,28" />
+</vector>
