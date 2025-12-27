@@ -27,10 +27,13 @@ class RegisterActivity : AppCompatActivity() {
             val password = etPassword.text.toString()
 
             if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
-                UserManager.register(name, phone, email, password)
-                PersistenceManager.saveData()
-                Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
-                finish() // Go back to login
+                if (UserManager.register(name, phone, email, password)) {
+                    PersistenceManager.saveData()
+                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this, "Email is already registered!", Toast.LENGTH_LONG).show()
+                }
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }

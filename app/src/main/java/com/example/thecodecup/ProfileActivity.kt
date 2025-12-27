@@ -1,6 +1,8 @@
 package com.example.thecodecup
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -35,8 +37,32 @@ class ProfileActivity : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
 
+        val btnSignOut = findViewById<Button>(R.id.btnSignOut)
+        btnSignOut.setOnClickListener {
+            handleSignOut()
+        }
+
         setupEditButtons()
         updateUI()
+    }
+
+    private fun handleSignOut() {
+        if (UserManager.isGuest) {
+            // Completely wipe data for guest accounts
+            UserManager.clearAllData()
+        } else {
+            // Just log out for registered accounts
+            UserManager.isLoggedIn = false
+        }
+        
+        // Persist the logged-out state (and potentially cleared data)
+        PersistenceManager.saveData()
+        
+        // Go back to login screen and clear activity stack
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun setupEditButtons() {

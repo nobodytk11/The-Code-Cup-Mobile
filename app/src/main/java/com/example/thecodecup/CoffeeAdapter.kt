@@ -15,8 +15,6 @@ class CoffeeAdapter(
     class CoffeeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.coffeeImage)
         val name: TextView = view.findViewById(R.id.coffeeName)
-        val rating: TextView = view.findViewById(R.id.coffeeRating)
-        val ratingCount: TextView = view.findViewById(R.id.coffeeRatingCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeViewHolder {
@@ -29,12 +27,6 @@ class CoffeeAdapter(
         val coffee = coffeeList[position]
         holder.name.text = coffee.name
         holder.image.setImageResource(coffee.imageResId)
-        
-        // Load real-time rating data
-        val ratingData = RatingManager.getRating(coffee.name)
-        holder.rating.text = String.format("%.1f", ratingData.average)
-        holder.ratingCount.text = "(${ratingData.count}+)"
-        
         holder.itemView.setOnClickListener { onItemClick(coffee) }
     }
 

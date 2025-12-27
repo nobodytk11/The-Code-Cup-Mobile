@@ -28,7 +28,8 @@ class OrdersActivity : AppCompatActivity() {
                 RewardManager.addStamps(1)
                 val pointsEarned = (order.totalPrice * 4).toInt()
                 val itemNames = order.items.joinToString(", ") { it.coffee.name }
-                RewardManager.addPoints(pointsEarned, itemNames, order.date)
+                // Pass the order's ORIGINAL timestamp to the RewardManager
+                RewardManager.addPoints(pointsEarned, itemNames, order.date, order.timestamp)
                 
                 PersistenceManager.saveData()
                 

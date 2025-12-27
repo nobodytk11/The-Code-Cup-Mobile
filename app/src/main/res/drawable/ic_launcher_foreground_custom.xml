@@ -1,0 +1,44 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:translateX="14"
+        android:translateY="14">
+        
+        <!-- Cup Rim (Top Down) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M40,40m-38,0a38,38 0,1 1,76 0a38,38 0,1 1,-76 0" />
+            
+        <!-- Coffee Crema (Dark Brown) -->
+        <path
+            android:fillColor="#5D4037"
+            android:pathData="M40,40m-34,0a34,34 0,1 1,68 0a34,34 0,1 1,-68 0" />
+            
+        <!-- Latte Art Heart (The "Foam") -->
+        <path
+            android:fillColor="#F5F5F5"
+            android:pathData="M40,58 
+                      C40,58 22,48 22,36 
+                      C22,26 32,24 40,32 
+                      C48,24 58,26 58,36 
+                      C58,48 40,58 40,58 Z" />
+                      
+        <!-- Small highlight on the heart -->
+        <path
+            android:fillColor="#80FFFFFF"
+            android:pathData="M34,32 C34,32 30,32 30,36 C30,40 34,40 34,40"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1"
+            android:strokeLineCap="round"
+            android:visibility="gone"/>
+
+        <!-- Cup Handle (Slightly visible from above) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M76,32 C82,32 82,48 76,48 L74,48 L74,32 Z" />
+            
+    </group>
+</vector>

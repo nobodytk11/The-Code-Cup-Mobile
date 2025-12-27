@@ -14,13 +14,23 @@ object PersistenceManager {
     private val gson = Gson()
     private val executor = Executors.newSingleThreadExecutor()
     private val mainHandler = Handler(Looper.getMainLooper())
+    private val lock = Any()
+    
+    private val saveHandler = Handler(Looper.getMainLooper())
+    private val saveRunnable = Runnable { performSave() }
 
     fun init(context: Context, onComplete: () -> Unit = {}) {
         prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        // Load data in background to prevent UI freeze
         executor.execute {
-            loadData()
-            mainHandler.post { onComplete() }
+            try {
+                synchronized(lock) {
+                    loadData()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                mainHandler.post { onComplete() }
+            }
         }
     }
 
@@ -28,75 +38,55 @@ object PersistenceManager {
         val isFirstRun = prefs.getBoolean("is_first_run", true)
 
         if (isFirstRun) {
-            UserManager.register("Anderson", "+60134589525", "Anderson@email.com", "1234")
+            UserManager.loginAsGuest()
             UserManager.isLoggedIn = false
             UserManager.availableVouchers = 0
             prefs.edit().putBoolean("is_first_run", false).apply()
-            saveDataInternal() // Sync save for the very first run is okay
+            saveDataInternal()
         } else {
-            UserManager.fullName = prefs.getString("user_name", "Anderson") ?: "Anderson"
-            UserManager.phoneNumber = prefs.getString("user_phone", "+60134589525") ?: "+60134589525"
-            UserManager.email = prefs.getString("user_email", "Anderson@email.com") ?: "Anderson@email.com"
-            UserManager.address = prefs.getString("user_address", "3 Addersion Court Chino Hills, HO56824, United State") ?: "3 Addersion Court Chino Hills, HO56824, United State"
-            UserManager.password = prefs.getString("user_password", "1234") ?: "1234"
+            val usersJson = prefs.getString("all_users", null)
+            if (!usersJson.isNullOrBlank()) {
+                val type = object : TypeToken<MutableList<UserAccount>>() {}.type
+                val loadedUsers: MutableList<UserAccount> = gson.fromJson(usersJson, type)
+                UserManager.allUsers.clear()
+                UserManager.allUsers.addAll(loadedUsers)
+            }
+
+            val currentEmail = prefs.getString("current_user_email", null)
             UserManager.isLoggedIn = prefs.getBoolean("is_logged_in", false)
-            UserManager.availableVouchers = prefs.getInt("user_vouchers", 0)
-
-            RewardManager.stampCount = prefs.getInt("reward_stamps", 0)
-            RewardManager.totalPoints = prefs.getInt("reward_points", 0)
             
-            // Background JSON parsing
-            prefs.getString("reward_history", null)?.let {
-                if (it.isNotBlank()) {
-                    val type = object : TypeToken<MutableList<RewardItem>>() {}.type
-                    val loaded: MutableList<RewardItem> = gson.fromJson(it, type)
-                    RewardManager.rewardHistory.clear()
-                    RewardManager.rewardHistory.addAll(loaded)
-                }
-            }
-
-            prefs.getString("orders", null)?.let {
-                if (it.isNotBlank()) {
-                    val type = object : TypeToken<MutableList<Order>>() {}.type
-                    val loaded: MutableList<Order> = gson.fromJson(it, type)
-                    OrderManager.orders.clear()
-                    OrderManager.orders.addAll(loaded)
-                }
-            }
-
-            prefs.getString("cart_items", null)?.let {
-                if (it.isNotBlank()) {
-                    val type = object : TypeToken<MutableList<CartItem>>() {}.type
-                    val loaded: MutableList<CartItem> = gson.fromJson(it, type)
-                    CartManager.items.clear()
-                    CartManager.items.addAll(loaded)
-                }
+            if (UserManager.isLoggedIn && currentEmail != null) {
+                UserManager.currentUser = UserManager.allUsers.find { it.email == currentEmail }
             }
         }
     }
 
     fun saveData() {
-        // Always save in background thread
+        saveHandler.removeCallbacks(saveRunnable)
+        saveHandler.postDelayed(saveRunnable, 500)
+    }
+
+    private fun performSave() {
         executor.execute {
-            saveDataInternal()
+            synchronized(lock) {
+                try {
+                    saveDataInternal()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
     private fun saveDataInternal() {
-        prefs.edit().apply {
-            putString("user_name", UserManager.fullName)
-            putString("user_phone", UserManager.phoneNumber)
-            putString("user_email", UserManager.email)
-            putString("user_address", UserManager.address)
-            putString("user_password", UserManager.password)
-            putBoolean("is_logged_in", UserManager.isLoggedIn)
-            putInt("user_vouchers", UserManager.availableVouchers)
-            putInt("reward_stamps", RewardManager.stampCount)
-            putInt("reward_points", RewardManager.totalPoints)
-            putString("reward_history", gson.toJson(RewardManager.rewardHistory))
-            putString("orders", gson.toJson(OrderManager.orders))
-            putString("cart_items", gson.toJson(CartManager.items))
-            apply()
-        }
+        val usersSnapshot = ArrayList(UserManager.allUsers)
+        val currentEmail = UserManager.currentUser?.email
+        val loggedIn = UserManager.isLoggedIn
+
+        prefs.edit()
+            .putString("all_users", gson.toJson(usersSnapshot))
+            .putString("current_user_email", currentEmail)
+            .putBoolean("is_logged_in", loggedIn)
+            .apply()
     }
 }

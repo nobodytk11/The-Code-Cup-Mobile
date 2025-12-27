@@ -7,9 +7,12 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -24,32 +27,34 @@ class CartActivity : AppCompatActivity() {
 
     private lateinit var adapter: CartAdapter
     private lateinit var tvTotalPrice: TextView
+    private lateinit var layoutEmptyCart: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
         tvTotalPrice = findViewById(R.id.tvTotalPrice)
+        layoutEmptyCart = findViewById(R.id.layoutEmptyCart)
         val rvCartItems = findViewById<RecyclerView>(R.id.rvCartItems)
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
         val btnCheckout = findViewById<Button>(R.id.btnCheckout)
 
         adapter = CartAdapter(CartManager.items) {
-            updateTotalPrice()
+            updateUIState()
             PersistenceManager.saveData()
         }
         rvCartItems.layoutManager = LinearLayoutManager(this)
         rvCartItems.adapter = adapter
 
-        // Swipe to delete with custom background and icon
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             private val deleteIcon: Drawable? = ContextCompat.getDrawable(this@CartActivity, R.drawable.ic_delete)
-            private val background = Paint().apply { color = Color.parseColor("#FFEBEE") } // Light red background
+            private val background = Paint().apply { color = Color.parseColor("#FFEBEE") }
 
             override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, t: RecyclerView.ViewHolder): Boolean = false
             
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 adapter.removeItem(viewHolder.adapterPosition)
+                updateUIState()
                 PersistenceManager.saveData()
             }
 
@@ -65,9 +70,8 @@ class CartActivity : AppCompatActivity() {
                 val itemView = viewHolder.itemView
                 val itemHeight = itemView.bottom - itemView.top
                 
-                // Draw background
                 if (dX < 0) {
-                    val cornerRadius = 32f // Match card corner radius
+                    val cornerRadius = 32f
                     val rect = RectF(
                         itemView.right.toFloat() + dX, 
                         itemView.top.toFloat(), 
@@ -76,7 +80,6 @@ class CartActivity : AppCompatActivity() {
                     )
                     c.drawRoundRect(rect, cornerRadius, cornerRadius, background)
 
-                    // Draw delete icon
                     deleteIcon?.let {
                         val iconMargin = (itemHeight - it.intrinsicHeight) / 2
                         val iconTop = itemView.top + (itemHeight - it.intrinsicHeight) / 2
@@ -106,7 +109,7 @@ class CartActivity : AppCompatActivity() {
                 val newOrder = Order(
                     id = UUID.randomUUID().toString(),
                     date = currentDate,
-                    timestamp = now, // Add current time for sorting
+                    timestamp = now,
                     items = ArrayList(CartManager.items),
                     totalPrice = CartManager.getTotalCartPrice(),
                     address = UserManager.address,
@@ -119,13 +122,22 @@ class CartActivity : AppCompatActivity() {
                 
                 startActivity(Intent(this, SuccessActivity::class.java))
                 finish()
+            } else {
+                Toast.makeText(this, "Your cart is empty. Please add items to checkout!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        updateTotalPrice()
+        updateUIState()
     }
 
-    private fun updateTotalPrice() {
+    private fun updateUIState() {
+        if (CartManager.items.isEmpty()) {
+            layoutEmptyCart.visibility = View.VISIBLE
+            findViewById<View>(R.id.rvCartItems).visibility = View.GONE
+        } else {
+            layoutEmptyCart.visibility = View.GONE
+            findViewById<View>(R.id.rvCartItems).visibility = View.VISIBLE
+        }
         tvTotalPrice.text = "$${String.format("%.2f", CartManager.getTotalCartPrice())}"
     }
 }

@@ -10,8 +10,7 @@ data class Order(
     val totalPrice: Double,
     val address: String,
     val userName: String,
-    var status: OrderStatus = OrderStatus.ONGOING,
-    var isRated: Boolean = false // New field to track if this order has been rated
+    var status: OrderStatus = OrderStatus.ONGOING
 ) : Serializable
 
 enum class OrderStatus {

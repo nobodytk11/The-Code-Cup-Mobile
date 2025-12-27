@@ -1,16 +1,27 @@
 package com.example.thecodecup
 
+import java.io.Serializable
+
+data class RewardItem(
+    val name: String,
+    val date: String,
+    val points: Int,
+    val timestamp: Long
+) : Serializable
+
 object RewardManager {
-    var stampCount = 4
-    var totalPoints = 2750
     private const val MAX_REWARDS = 12
-    
-    val rewardHistory = mutableListOf(
-        RewardItem("Americano", "24 June | 12:30 PM", 12, 1624537800000L),
-        RewardItem("Cafe Latte", "22 June | 08:30 AM", 12, 1624350600000L),
-        RewardItem("Green Tea Latte", "16 June | 10:48 AM", 12, 1623840480000L),
-        RewardItem("Flat White", "12 May | 11:25 AM", 12, 1620818700000L)
-    )
+
+    var stampCount: Int
+        get() = UserManager.currentUser?.stampCount ?: 0
+        set(value) { UserManager.currentUser?.stampCount = value }
+
+    var totalPoints: Int
+        get() = UserManager.currentUser?.totalPoints ?: 0
+        set(value) { UserManager.currentUser?.totalPoints = value }
+
+    val rewardHistory: MutableList<RewardItem>
+        get() = UserManager.currentUser?.rewardHistory ?: mutableListOf()
 
     fun addStamps(count: Int) {
         stampCount += count
@@ -26,17 +37,18 @@ object RewardManager {
         }
     }
 
-    fun addPoints(points: Int, itemName: String, date: String) {
+    fun addPoints(points: Int, itemName: String, date: String, timestamp: Long) {
         totalPoints += points
-        rewardHistory.add(0, RewardItem(itemName, date, points, System.currentTimeMillis()))
-        
+        rewardHistory.add(RewardItem(itemName, date, points, timestamp))
+        rewardHistory.sortByDescending { it.timestamp }
         if (rewardHistory.size > MAX_REWARDS) {
             rewardHistory.removeAt(rewardHistory.size - 1)
         }
     }
 
     fun getSortedHistory(): List<RewardItem> {
-        return rewardHistory.sortedByDescending { it.timestamp }
+        // Now just returns the list because it is guaranteed to be sorted on add
+        return rewardHistory
     }
 
     fun redeemProduct(pointsNeeded: Int): Boolean {
@@ -48,10 +60,3 @@ object RewardManager {
         }
     }
 }
-
-data class RewardItem(
-    val name: String,
-    val date: String,
-    val points: Int,
-    val timestamp: Long
-)

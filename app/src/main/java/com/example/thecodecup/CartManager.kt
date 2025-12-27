@@ -1,10 +1,10 @@
 package com.example.thecodecup
 
 object CartManager {
-    val items = mutableListOf<CartItem>()
+    val items: MutableList<CartItem>
+        get() = UserManager.currentUser?.cartItems ?: mutableListOf()
 
     fun addItem(item: CartItem) {
-        // Add to the beginning of the list so newest added items appear at the top
         items.add(0, item)
     }
 

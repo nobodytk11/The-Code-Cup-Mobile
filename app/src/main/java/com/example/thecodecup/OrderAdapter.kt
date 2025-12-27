@@ -3,9 +3,7 @@ package com.example.thecodecup
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 
 class OrderAdapter(
@@ -18,7 +16,6 @@ class OrderAdapter(
         val price: TextView = view.findViewById(R.id.tvOrderPrice)
         val items: TextView = view.findViewById(R.id.tvOrderItems)
         val address: TextView = view.findViewById(R.id.tvOrderAddress)
-        val btnRate: Button = view.findViewById(R.id.btnRateOrder)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -34,34 +31,7 @@ class OrderAdapter(
         holder.items.text = order.items.joinToString(", ") { it.coffee.name }
         holder.address.text = order.address
         
-        // Show rate button only for HISTORY orders that haven't been rated yet
-        if (order.status == OrderStatus.HISTORY && !order.isRated) {
-            holder.btnRate.visibility = View.VISIBLE
-            holder.btnRate.setOnClickListener {
-                showRatingDialog(holder.itemView.context, order)
-            }
-        } else {
-            holder.btnRate.visibility = View.GONE
-        }
-        
         holder.itemView.setOnClickListener { onOrderClick(order) }
-    }
-
-    private fun showRatingDialog(context: android.content.Context, order: Order) {
-        val ratings = arrayOf("1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars")
-        AlertDialog.Builder(context)
-            .setTitle("Rate your order")
-            .setItems(ratings) { _, which ->
-                val score = which + 1
-                // Add rating for each coffee in the order
-                order.items.forEach { cartItem ->
-                    RatingManager.addRating(cartItem.coffee.name, score)
-                }
-                order.isRated = true
-                PersistenceManager.saveData()
-                notifyDataSetChanged()
-            }
-            .show()
     }
 
     override fun getItemCount() = orders.size

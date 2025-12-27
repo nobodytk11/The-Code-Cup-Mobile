@@ -10,5 +10,5 @@ data class CartItem(
     var size: String,
     var iceLevel: String,
     var totalPrice: Double,
-    var isVoucherUsed: Boolean = false // Track if a voucher was applied to this specific item
+    var vouchersUsedCount: Int = 0 // Track exactly how many vouchers were applied to this item
 ) : Serializable

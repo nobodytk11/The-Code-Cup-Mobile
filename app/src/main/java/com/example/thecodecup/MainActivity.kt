@@ -2,6 +2,7 @@ package com.example.thecodecup
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var tvHomeUserName: TextView
     private lateinit var tvHomeStampCount: TextView
+    private lateinit var tvCartBadge: TextView
     private lateinit var hCups: List<ImageView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         tvHomeUserName = findViewById(R.id.tvHomeUserName)
         tvHomeStampCount = findViewById(R.id.tvHomeStampCount)
+        tvCartBadge = findViewById(R.id.tvCartBadge)
         
         hCups = listOf(
             findViewById(R.id.hCup1), findViewById(R.id.hCup2),
@@ -96,16 +99,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateLoyaltyCard() {
         tvHomeStampCount.text = "${RewardManager.stampCount} / 8"
-        
-        // Simplified logic: If count >= 8, all 8 cups are solid. Otherwise, show count.
         val visibleActiveStamps = if (RewardManager.stampCount >= 8) 8 else RewardManager.stampCount
-
         for (i in 0 until 8) {
             if (i < visibleActiveStamps) {
-                hCups[i].alpha = 1.0f // Solid
+                hCups[i].alpha = 1.0f
             } else {
-                hCups[i].alpha = 0.1f // Faded
+                hCups[i].alpha = 0.1f
             }
+        }
+    }
+
+    private fun updateCartBadge() {
+        val count = CartManager.getCartCount()
+        if (count > 0) {
+            tvCartBadge.visibility = View.VISIBLE
+            tvCartBadge.text = count.toString()
+        } else {
+            tvCartBadge.visibility = View.GONE
         }
     }
 
@@ -113,11 +123,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         tvHomeUserName.text = UserManager.fullName
         updateLoyaltyCard()
+        updateCartBadge()
         setupBottomNav()
-    }
-    
-    override fun onPause() {
-        super.onPause()
-        overridePendingTransition(0, 0)
     }
 }

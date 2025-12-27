@@ -56,20 +56,6 @@
                 android:text="Americano"
                 android:textColor="#A0A0A0"
                 android:textSize="13sp" />
-            
-            <!-- Rating Button (Only shown in History) -->
-            <Button
-                android:id="@+id/btnRateOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:backgroundTint="@color/primary_dark"
-                android:text="Rate"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:paddingHorizontal="12dp"
-                app:cornerRadius="14dp"
-                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout

@@ -40,7 +40,13 @@ class CartAdapter(
     override fun getItemCount() = items.size
 
     fun removeItem(position: Int) {
-        CartManager.items.removeAt(position)
+        val item = items[position]
+        // If the item had vouchers applied, return them to the user
+        if (item.vouchersUsedCount > 0) {
+            UserManager.availableVouchers += item.vouchersUsedCount
+        }
+        
+        items.removeAt(position)
         notifyItemRemoved(position)
         onItemsChanged()
     }

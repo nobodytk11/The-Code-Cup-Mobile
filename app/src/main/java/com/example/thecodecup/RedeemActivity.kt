@@ -28,9 +28,11 @@ class RedeemActivity : AppCompatActivity() {
 
         rvRedeemItems.adapter = RedeemAdapter(redeemableList) { coffee, points ->
             if (RewardManager.redeemProduct(points)) {
-                PersistenceManager.saveData() // Persist points change
-                Toast.makeText(this, "${coffee.name} redeemed successfully!", Toast.LENGTH_SHORT).show()
-                finish() // Go back to rewards screen to see updated points
+                // Award a free voucher upon successful redemption using points
+                UserManager.availableVouchers++
+                PersistenceManager.saveData() // Persist changes
+                Toast.makeText(this, "${coffee.name} redeemed! You received a free voucher!", Toast.LENGTH_LONG).show()
+                finish() // Go back to rewards screen
             } else {
                 Toast.makeText(this, "Not enough points!", Toast.LENGTH_SHORT).show()
             }
