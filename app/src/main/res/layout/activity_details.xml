@@ -194,10 +194,11 @@
                 <ImageButton android:id="@+id/btnIced" android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_iced_coffee" android:background="?attr/selectableItemBackgroundBorderless" android:layout_marginStart="16dp" android:padding="4dp" android:scaleType="fitCenter"/>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginTop="16dp"/>
+            <View android:id="@+id/dividerSize" android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginTop="16dp"/>
 
             <!-- Size -->
             <LinearLayout
+                android:id="@+id/layoutSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -211,10 +212,11 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginTop="16dp"/>
+            <View android:id="@+id/dividerIce" android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginTop="16dp"/>
 
             <!-- Ice -->
             <LinearLayout
+                android:id="@+id/layoutIce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

@@ -33,7 +33,10 @@ class CartAdapter(
         holder.quantity.text = "x ${item.quantity}"
         holder.price.text = "$${String.format("%.2f", item.totalPrice)}"
         
-        val detailsText = "${item.shot.lowercase()} | ${if (item.isIced) "iced" else "hot"} | ${item.size.lowercase()} | ${item.iceLevel.lowercase()} ice"
+        val mode = if (item.isIced) "iced" else "hot"
+        val iceText = if (item.isIced) " | ${item.iceLevel.lowercase()} ice" else ""
+        val detailsText = "$mode | ${item.shot.lowercase()} | ${item.size.lowercase()}$iceText"
+        
         holder.details.text = detailsText
     }
 
@@ -41,11 +44,9 @@ class CartAdapter(
 
     fun removeItem(position: Int) {
         val item = items[position]
-        // If the item had vouchers applied, return them to the user
         if (item.vouchersUsedCount > 0) {
             UserManager.availableVouchers += item.vouchersUsedCount
         }
-        
         items.removeAt(position)
         notifyItemRemoved(position)
         onItemsChanged()

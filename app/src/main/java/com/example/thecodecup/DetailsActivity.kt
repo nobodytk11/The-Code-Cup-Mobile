@@ -29,6 +29,8 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var voucherBanner: CardView
     private lateinit var btnApplyVoucher: Button
     private lateinit var tvVoucherMessage: TextView
+    private lateinit var layoutIce: View
+    private lateinit var dividerIce: View
     
     private var isIced = true
     private var isVoucherApplied = false
@@ -49,6 +51,8 @@ class DetailsActivity : AppCompatActivity() {
         rgShot = findViewById(R.id.rgShot)
         rgSize = findViewById(R.id.rgSize)
         rgIce = findViewById(R.id.rgIce)
+        layoutIce = findViewById(R.id.layoutIce)
+        dividerIce = findViewById(R.id.dividerIce)
         voucherBanner = findViewById(R.id.voucherBanner)
         btnApplyVoucher = findViewById(R.id.btnApplyVoucher)
         tvVoucherMessage = findViewById(R.id.tvVoucherMessage)
@@ -157,11 +161,13 @@ class DetailsActivity : AppCompatActivity() {
                     R.id.rbLarge -> "Large"
                     else -> "Medium"
                 },
-                iceLevel = when (rgIce.checkedRadioButtonId) {
-                    R.id.rbIceSmall -> "Low"
-                    R.id.rbIceLarge -> "Full"
-                    else -> "Medium"
-                },
+                iceLevel = if (isIced) {
+                    when (rgIce.checkedRadioButtonId) {
+                        R.id.rbIceSmall -> "Low"
+                        R.id.rbIceLarge -> "Full"
+                        else -> "Medium"
+                    }
+                } else "N/A",
                 totalPrice = finalPrice,
                 vouchersUsedCount = vouchersUsed
             )
@@ -221,6 +227,14 @@ class DetailsActivity : AppCompatActivity() {
         tvQuantity.text = quantity.toString()
         val originalTotal = calculateBaseTotal()
         
+        if (isIced) {
+            layoutIce.visibility = View.VISIBLE
+            dividerIce.visibility = View.VISIBLE
+        } else {
+            layoutIce.visibility = View.GONE
+            dividerIce.visibility = View.GONE
+        }
+
         if (isVoucherApplied && UserManager.availableVouchers > 0) {
             val vouchersUsed = min(quantity, UserManager.availableVouchers)
             val unitPrice = originalTotal / quantity

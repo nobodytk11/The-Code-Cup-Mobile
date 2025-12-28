@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvHomeUserName: TextView
     private lateinit var tvHomeStampCount: TextView
     private lateinit var tvCartBadge: TextView
+    private lateinit var tvGreeting: TextView
     private lateinit var hCups: List<ImageView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         tvHomeUserName = findViewById(R.id.tvHomeUserName)
         tvHomeStampCount = findViewById(R.id.tvHomeStampCount)
         tvCartBadge = findViewById(R.id.tvCartBadge)
+        tvGreeting = findViewById(R.id.tvGreeting)
         
         hCups = listOf(
             findViewById(R.id.hCup1), findViewById(R.id.hCup2),
@@ -109,6 +112,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateGreeting() {
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val greeting = when (hour) {
+            in 0..11 -> "Good morning"
+            in 12..16 -> "Good afternoon"
+            in 17..20 -> "Good evening"
+            else -> "Good night"
+        }
+        tvGreeting.text = greeting
+    }
+
     private fun updateCartBadge() {
         val count = CartManager.getCartCount()
         if (count > 0) {
@@ -122,6 +136,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         tvHomeUserName.text = UserManager.fullName
+        updateGreeting()
         updateLoyaltyCard()
         updateCartBadge()
         setupBottomNav()
